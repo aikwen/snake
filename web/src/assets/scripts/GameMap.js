@@ -21,6 +21,7 @@ export class GameMap extends AcGameObject {
       new Snake({ id: 0, color: "#4876eb", r: this.rows - 2, c: 1 }, this),
       new Snake({ id: 1, color: "#f84646", r: 1, c: this.cols - 2 }, this)
     ];
+
   }
 
   check_connectivity(g, sx, sy, tx, ty) {
@@ -120,7 +121,7 @@ export class GameMap extends AcGameObject {
   check_ready() { // 判断两条蛇是否都准备了下一回合
     for (const snake of this.snakes) {
       if (snake.status !== "idle") return false;
-      if (snake.derection === -1) return false;
+      if (snake.direction === -1) return false;
     }
 
     return true
@@ -146,6 +147,30 @@ export class GameMap extends AcGameObject {
     for (const snake of this.snakes) {
       snake.next_step();
     }
+  }
+
+
+  check_valid(cell) {
+    // 检测目标位置是否合法：没有撞到两条蛇的身体和障碍物
+    for (const wall of this.walls) {
+      if (wall.r == cell.r && wall.c === cell.c) {
+        return false
+      }
+    }
+
+    for (const snake of this.snakes) {
+      let k = snake.cells.length
+      if (!snake.check_tail_increasing()) {
+        k--;
+      }
+
+      for (let i = 0; i < k; i++) {
+        if (snake.cells[i].r === cell.r && snake.cells[i].c === cell.c) {
+          return false
+        }
+      }
+    }
+    return true
   }
 
   update() {
