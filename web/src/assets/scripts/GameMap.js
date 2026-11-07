@@ -90,6 +90,14 @@ export class GameMap extends AcGameObject {
     }
   }
 
+  on_destroy() {
+    for (const wall of this.walls) {
+      wall.destroy();
+    }
+  
+    this.walls = [];
+  }
+
   update_size() {
     this.L = parseInt(Math.min(this.parent.clientWidth / this.cols,
       this.parent.clientHeight / this.rows));
