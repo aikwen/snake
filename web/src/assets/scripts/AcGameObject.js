@@ -1,8 +1,8 @@
-const AC_GMAE_OBJECTS = []
+const AC_GAME_OBJECTS = []
 
 export class AcGameObject {
   constructor() {
-    AC_GMAE_OBJECTS.push(this);
+    AC_GAME_OBJECTS.push(this);
     this.timedelta = 0;
     this.has_called_start = false;
   }
@@ -15,18 +15,18 @@ export class AcGameObject {
     
   }
 
-  on_destory() { // 删除之前执行
+  on_destroy() { // 删除之前执行
     
   }
 
 
   destroy() {
-    this.on_destory();
+    this.on_destroy();
     
-    for (let i in AC_GMAE_OBJECTS) {
-      const obj = AC_GMAE_OBJECTS[i];
+    for (let i in AC_GAME_OBJECTS) {
+      const obj = AC_GAME_OBJECTS[i];
       if (obj === this) {
-        AC_GMAE_OBJECTS.splice(i);
+        AC_GAME_OBJECTS.splice(i, 1);
         break;
       }
     }
@@ -36,7 +36,7 @@ export class AcGameObject {
 
 let last_timestamp; // 上一次执行的时刻
 const step = timestamp => {
-  for (let obj of AC_GMAE_OBJECTS) {
+  for (let obj of AC_GAME_OBJECTS) {
     if (!obj.has_called_start) {
       obj.has_called_start = true;
       obj.start();
